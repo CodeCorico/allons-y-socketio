@@ -1,0 +1,7 @@
+{
+  "env": [{
+    "type": "confirm",
+    "name": "SOCKETIO",
+    "message": "Enable Socket.io:"
+  }]
+}

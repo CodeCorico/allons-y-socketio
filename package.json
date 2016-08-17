@@ -1,0 +1,24 @@
+{
+  "name": "allons-y-socketio",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodeCorico/allons-y-socketio.git"
+  },
+  "author": "CodeCorico <hello@codecorico.com>",
+  "bugs": {
+    "url": "https://github.com/CodeCorico/allons-y-socketio/issues"
+  },
+  "homepage": "https://github.com/CodeCorico/allons-y-socketio",
+  "dependencies": {
+    "socket.io": "^1.4.8",
+    "socket.io-cookie-parser": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=4.1",
+    "npm": ">=3.2"
+  },
+  "license": "MIT"
+}
