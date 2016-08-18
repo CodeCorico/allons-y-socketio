@@ -15,6 +15,8 @@ module.exports = function($allonsy, $http) {
     return io;
   }]);
 
+  require(path.resolve(__dirname, '../sockets/sockets-service.js'))();
+
   var socketioFiles = $allonsy.findInFeaturesSync('*-socketio.js');
 
   socketioFiles.forEach(function(file) {
