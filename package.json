@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/CodeCorico/allons-y-socketio",
   "dependencies": {
+    "extend": "^3.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
