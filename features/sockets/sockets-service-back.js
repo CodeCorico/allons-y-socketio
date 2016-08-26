@@ -3,11 +3,23 @@ module.exports = function() {
 
   var extend = require('extend');
 
-  DependencyInjection.service('$SocketsService', ['$io', function($io) {
+  DependencyInjection.service('$SocketsService', function($io) {
 
     return new (function SocketsService() {
 
       var _this = this;
+
+      this.reserveSockets = function(socket, count) {
+        socket.socketsReserved += count;
+        $io.socketsReserved += count;
+      };
+
+      this.unreserveSockets = function(socket, count) {
+        count = Math.min(count, socket.socketsReserved);
+
+        socket.socketsReserved -= count;
+        $io.socketsReserved -= count;
+      };
 
       this.each = function(iterateFunc) {
         for (var sessionsName in $io.sockets.connected) {
@@ -97,6 +109,6 @@ module.exports = function() {
       };
 
     })();
-  }]);
+  });
 
 };

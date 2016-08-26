@@ -4,5 +4,11 @@
     "name": "SOCKETIO",
     "message": "Enable Socket.io:",
     "when": "EXPRESS=true"
+  }, {
+    "type": "input",
+    "name": "SOCKETIO_MAX",
+    "message": "Max sockets per server instance:",
+    "default": 1000,
+    "when": ["EXPRESS=true", "SOCKETIO=true"]
   }]
 }
