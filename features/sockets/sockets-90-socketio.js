@@ -60,20 +60,36 @@ module.exports = function($allonsy, $io) {
     };
   };
 
+  var eventFilters = [];
+
+  $io.eventFilter = function(func) {
+    if (eventFilters.indexOf(func) > -1) {
+      return;
+    }
+
+    eventFilters.push(func);
+  };
+
+  $io.removeEventFilter = function(func) {
+    var index = eventFilters.indexOf(func);
+
+    if (index < 0) {
+      return;
+    }
+
+    eventFilters.splice(index, 1);
+  };
+
   $io.on('connection', function(socket) {
 
     allConfigs.forEach(function(config) {
 
       socket.on(config.event, function(message) {
-        // if (config.isMember && (!socket.user || !socket.user.id)) {
-        //   return;
-        // }
-
-        // if (config.permissions && config.permissions.length) {
-        //   if (!socket.user || !socket.user.id || !socket.user.hasPermissions(config.permissions)) {
-        //     return;
-        //   }
-        // }
+        for (var i = 0; i < eventFilters.length; i++) {
+          if (!eventFilters(socket, config, message)) {
+            return;
+          }
+        }
 
         DependencyInjection.injector.controller.invoke(new SocketEvent(), config.controller, {
           controller: {
