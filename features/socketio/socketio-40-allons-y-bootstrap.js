@@ -17,7 +17,7 @@ module.exports = {
       'controllers/*-event.js'
     ]);
 
-    require(path.resolve(__dirname, 'socketio-service-back.js'))();
+    require(path.resolve(__dirname, 'models/socketio-service-back.js'))();
 
     var $SocketIOService = DependencyInjection.injector.controller.get('$SocketIOService');
 
