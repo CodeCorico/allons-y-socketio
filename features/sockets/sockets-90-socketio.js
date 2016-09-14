@@ -4,7 +4,8 @@ module.exports = function($allonsy, $io) {
 
   var path = require('path'),
       eventsFiles = $allonsy.findInFeaturesSync('controllers/*-event.js'),
-      allConfigs = [];
+      allConfigs = [],
+      eventFilters = [];
 
   eventsFiles.forEach(function(file) {
     var configs = require(path.resolve(file));
@@ -60,8 +61,6 @@ module.exports = function($allonsy, $io) {
     };
   };
 
-  var eventFilters = [];
-
   $io.eventFilter = function(func) {
     if (eventFilters.indexOf(func) > -1) {
       return;
@@ -86,7 +85,7 @@ module.exports = function($allonsy, $io) {
 
       socket.on(config.event, function(message) {
         for (var i = 0; i < eventFilters.length; i++) {
-          if (!eventFilters(socket, config, message)) {
+          if (!eventFilters[i](socket, config, message)) {
             return;
           }
         }

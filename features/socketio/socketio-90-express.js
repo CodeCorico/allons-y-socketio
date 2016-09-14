@@ -17,41 +17,41 @@ module.exports = function($allonsy, $http) {
     return io;
   });
 
+  io.socketsCount = 0;
   io.socketsReserved = 0;
 
-  $allonsy.sendMessage({
-    event: 'update(socketio/sockets)',
-    sockets: 0,
-    socketsReserved: 0
-  });
+  function _updateParentSockets() {
+    $allonsy.sendMessage({
+      event: 'update(socketio/sockets)',
+      sockets: io.socketsCount,
+      socketsReserved: io.socketsReserved
+    });
+  }
+
+  _updateParentSockets();
 
   require(path.resolve(__dirname, '../sockets/sockets-service-back.js'))();
 
   io.on('connection', function(socket) {
     socket.socketsReserved = 0;
+    io.socketsCount++;
 
-    if (io.sockets.length + io.socketsReserved > SOCKETIO_MAX) {
+    if (io.socketsCount + io.socketsReserved > SOCKETIO_MAX) {
       socket.emit('full-sockets');
 
       socket.disconnect();
     }
     else {
-      $allonsy.sendMessage({
-        event: 'update(socketio/sockets)',
-        sockets: io.sockets.length,
-        socketsReserved: io.socketsReserved
-      });
+      _updateParentSockets();
 
       socket.on('disconnect', function() {
+        io.socketsCount--;
+
         if (socket.socketsReserved) {
           io.socketsReserved -= socket.socketsReserved;
         }
 
-        $allonsy.sendMessage({
-          event: 'update(socketio/sockets)',
-          sockets: io.sockets.length,
-          socketsReserved: io.socketsReserved
-        });
+        _updateParentSockets();
       });
     }
   });

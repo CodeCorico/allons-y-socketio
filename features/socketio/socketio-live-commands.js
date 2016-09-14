@@ -1,20 +1,20 @@
 'use strict';
 
 module.exports = function($allonsy) {
-  $allonsy.outputInfo('\n► sockets:\n\n');
+  $allonsy.outputInfo('\n► sockets:\n');
 
   var path = require('path');
 
-  require(path.resolve(__dirname, 'socketio-service-back.js'))();
+  require(path.resolve(__dirname, 'models/socketio-service-back.js'))();
 
   var $SocketIOService = DependencyInjection.injector.controller.get('$SocketIOService'),
       child = $allonsy.childByName('Allons-y Express');
 
   if (!child || !child.processes || !child.processes.length) {
-    $allonsy.outputInfo('  No Express server started\n');
+    $allonsy.outputInfo('  No Express server started');
   }
 
-  $allonsy.outputInfo('  Sockets max per server: ' + parseInt(process.env.SOCKETIO_MAX || 1000, 10) + '\n\n');
+  $allonsy.outputInfo('  Sockets max per server: ' + parseInt(process.env.SOCKETIO_MAX || 1000, 10) + '\n');
 
   child.processes.forEach(function(p) {
     var socketsData = $SocketIOService.processSockets(p) || {
@@ -22,12 +22,10 @@ module.exports = function($allonsy) {
       socketsReserved: 0
     };
 
-    console.log([
+    $allonsy.output([
       '  ∙ [', $allonsy.textInfo(p.name), ' #', p.id, '] ',
       'sockets: ', $allonsy.textWarning(socketsData.sockets),
       ', reserved: ', $allonsy.textWarning(socketsData.socketsReserved)
-    ].join(''));
+    ].join(''), '\n');
   });
-
-  console.log('');
 };
