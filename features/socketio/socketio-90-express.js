@@ -30,7 +30,7 @@ module.exports = function($allonsy, $http) {
 
   _updateParentSockets();
 
-  require(path.resolve(__dirname, '../sockets/sockets-service-back.js'))();
+  require(path.resolve(__dirname, '../sockets/models/sockets-service-back.js'))();
 
   io.on('connection', function(socket) {
     socket.socketsReserved = 0;
