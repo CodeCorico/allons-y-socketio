@@ -7,6 +7,8 @@ module.exports = function() {
 
     return new (function SocketsService() {
 
+      require('events-manager').EventsManager.call(this);
+
       var _this = this;
 
       this.reserveSockets = function(socket, count) {
