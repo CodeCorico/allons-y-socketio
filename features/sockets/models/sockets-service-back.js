@@ -48,20 +48,6 @@ module.exports = function() {
                 exists = true,
                 filterNamespace = filter.split('.');
 
-            if (filter == 'permissions') {
-              if (!socket.user || !socket.user.id) {
-                match = false;
-                break;
-              }
-
-              if (!socket.user.hasPermissions(filtervalue)) {
-                match = false;
-                break;
-              }
-
-              continue;
-            }
-
             for (var i = 0; i < filterNamespace.length; i++) {
               var name = filterNamespace[i];
 
