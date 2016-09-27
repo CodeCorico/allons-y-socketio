@@ -38,14 +38,16 @@ module.exports = function() {
       };
 
       this.emitSocket = function(socket, ownerSocket, filters, socketAction, eventName, args) {
-        var match = true,
-            filter;
+        var filter;
 
         if (filters) {
           for (filter in filters) {
+            if (!filters.hasOwnProperty(filter)) {
+              continue;
+            }
+
             var filtervalue = filters[filter],
                 namespace = socket,
-                exists = true,
                 filterNamespace = filter.split('.');
 
             for (var i = 0; i < filterNamespace.length; i++) {
@@ -58,32 +60,29 @@ module.exports = function() {
               namespace = namespace[name];
             }
 
-            if (!exists) {
-              match = false;
-              break;
+            if (Array.isArray(namespace)) {
+              if (namespace.indexOf(filtervalue) < 0) {
+                return;
+              }
             }
             else if (filtervalue instanceof RegExp) {
               if (!namespace.match(filtervalue)) {
-                match = false;
-                break;
+                return;
               }
             }
             else if (namespace !== filtervalue) {
-              match = false;
-              break;
+              return;
             }
           }
         }
 
-        if (match) {
-          if (socketAction) {
-            socketAction(socket);
-          }
-
-          socket.emit(eventName, extend(true, {
-            isOwner: ownerSocket == socket
-          }, args));
+        if (socketAction) {
+          socketAction(socket);
         }
+
+        socket.emit(eventName, extend(true, {
+          isOwner: ownerSocket == socket
+        }, args));
       };
 
       this.error = function($socket, $message, sendEvent, errorText, extendArgs) {
