@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($gulp) {
+module.exports = function($allonsy, $gulp) {
 
   var sourcemaps = require('gulp-sourcemaps'),
       uglify = require('gulp-uglify'),
@@ -12,7 +12,13 @@ module.exports = function($gulp) {
       .src('node_modules/socket.io-client/socket.io.js')
       .pipe($gulp.dist('vendor'))
       .pipe(sourcemaps.init())
-      .pipe(uglify())
+      .pipe(uglify().on('error', function(err) {
+        $allonsy.logWarning('allons-y-socketio', 'socketio:uglify', {
+          error: err
+        });
+
+        this.emit('end');
+      }))
       .pipe(rename({
         extname: '.min.js'
       }))
