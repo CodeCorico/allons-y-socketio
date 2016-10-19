@@ -9,7 +9,7 @@ module.exports = function($allonsy, $gulp) {
   $gulp.task('socketio', function(done) {
 
     $gulp
-      .src('node_modules/socket.io-client/socket.io.js')
+      .src('./node_modules/socket.io-client/socket.io.js')
       .pipe($gulp.dist('vendor'))
       .pipe(sourcemaps.init())
       .pipe(uglify().on('error', function(err) {
