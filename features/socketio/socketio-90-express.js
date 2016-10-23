@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($allonsy, $http) {
+module.exports = function($allonsy, $http, $server, $BodyDataService) {
   if (process.env.SOCKETIO && process.env.SOCKETIO == 'false') {
     return;
   }
@@ -31,6 +31,18 @@ module.exports = function($allonsy, $http) {
   _updateParentSockets();
 
   require(path.resolve(__dirname, '../sockets/models/sockets-service-back.js'))();
+
+  $server.use(function(req, res, next) {
+    $allonsy.sendMessage({
+      event: 'call(socketio/url)'
+    }, function(message) {
+      $BodyDataService.data(req, 'sockets', {
+        url: message.url
+      });
+
+      next();
+    });
+  });
 
   io.on('connection', function(socket) {
     socket.socketsReserved = 0;
