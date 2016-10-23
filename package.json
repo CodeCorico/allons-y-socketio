@@ -15,7 +15,7 @@
     "npm": ">=3.2"
   },
   "dependencies": {
-    "allons-y-express": "^1.0.1",
+    "allons-y-express": "^1.0.2",
     "events-manager": "^1.1.2",
     "extend": "^3.0.0",
     "gulp-rename": "^1.2.2",
