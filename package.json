@@ -15,8 +15,6 @@
     "npm": ">=3.2"
   },
   "dependencies": {
-    "allons-y": "^1.0.0",
-    "allons-y-dotenv": "^1.0.0",
     "allons-y-express": "^1.0.0",
     "events-manager": "^1.1.2",
     "extend": "^3.0.0",
