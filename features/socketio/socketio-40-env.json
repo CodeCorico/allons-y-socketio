@@ -8,7 +8,13 @@
     "type": "input",
     "name": "SOCKETIO_MAX",
     "message": "Max sockets per server instance:",
-    "default": 1000,
+    "default": 10000,
+    "when": ["EXPRESS=true", "SOCKETIO=true"]
+  }, {
+    "type": "input",
+    "name": "SOCKETIO_URL",
+    "message": "Url of your sockets servers can be called (use '{index}' and/or '{port}' for multiple servers):",
+    "default": "http://localhost:{port}",
     "when": ["EXPRESS=true", "SOCKETIO=true"]
   }]
 }

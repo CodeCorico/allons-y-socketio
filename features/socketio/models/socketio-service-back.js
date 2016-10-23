@@ -1,7 +1,7 @@
 module.exports = function() {
   'use strict';
 
-  DependencyInjection.service('$SocketIOService', function($ExpressService) {
+  DependencyInjection.service('$SocketIOService', function() {
 
     return new (function SocketIOService() {
 
@@ -14,9 +14,15 @@ module.exports = function() {
           return _processes[p.id];
         }
 
+        var index = p.id.split('.')[1],
+            port = parseInt(process.env.EXPRESS_PORT || 8086, 10) + index;
+
         _processes[p.id] = _processes[p.id] || {};
         _processes[p.id].sockets = sockets;
         _processes[p.id].socketsReserved = socketsReserved;
+        _processes[p.id].url = process.env.SOCKETIO_URL
+          .replace(/{port}/g, port)
+          .replace(/{index}/g, index);
 
         return _processes[p.id];
       };
@@ -33,6 +39,7 @@ module.exports = function() {
           if (minSockets.count > count) {
             minSockets.id = id;
             minSockets.count = count;
+            minSockets.url = _processes[id].url;
           }
         });
 
@@ -40,9 +47,7 @@ module.exports = function() {
           return 'full-sockets';
         }
 
-        return $ExpressService.processServer({
-          id: minSockets.id
-        }).url;
+        return minSockets.url;
       };
 
     })();
