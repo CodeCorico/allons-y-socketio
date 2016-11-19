@@ -14,7 +14,7 @@ module.exports = function() {
           return _processes[p.id];
         }
 
-        var index = p.id.split('.')[1],
+        var index = parseInt(p.id.split('.')[1], 10),
             port = parseInt(process.env.EXPRESS_PORT || 8086, 10) + index;
 
         _processes[p.id] = _processes[p.id] || {};
