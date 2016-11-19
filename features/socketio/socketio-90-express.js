@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($allonsy, $http, $server, $BodyDataService) {
+module.exports = function($allonsy, $http, $server) {
   if (process.env.SOCKETIO && process.env.SOCKETIO == 'false') {
     return;
   }
@@ -32,17 +32,21 @@ module.exports = function($allonsy, $http, $server, $BodyDataService) {
 
   require(path.resolve(__dirname, '../sockets/models/sockets-service-back.js'))();
 
-  $server.use(function(req, res, next) {
-    $allonsy.sendMessage({
-      event: 'call(socketio/url)'
-    }, function(message) {
-      $BodyDataService.data(req, 'sockets', {
-        url: message.url
-      });
+  var $BodyDataService = DependencyInjection.injector.controller.get('$BodyDataService', true);
 
-      next();
+  if ($BodyDataService) {
+    $server.use(function(req, res, next) {
+      $allonsy.sendMessage({
+        event: 'call(socketio/url)'
+      }, function(message) {
+        $BodyDataService.data(req, 'sockets', {
+          url: message.url
+        });
+
+        next();
+      });
     });
-  });
+  }
 
   io.on('connection', function(socket) {
     socket.socketsReserved = 0;
