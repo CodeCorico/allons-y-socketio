@@ -1,6 +1,6 @@
 {
   "name": "allons-y-socketio",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Integrate socket.io inside express started servers.",
   "license": "MIT",
   "homepage": "https://allons-y.io",
